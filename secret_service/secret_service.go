@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"errors"
+
 	"github.com/godbus/dbus"
 )
 
@@ -226,6 +227,15 @@ func (s *SecretService) GetSecret(itemPath dbus.ObjectPath, session dbus.ObjectP
 	}
 
 	return &secret, nil
+}
+
+// GetLabel gets label for an item in a given session.
+func (s *SecretService) GetLabel(itemPath dbus.ObjectPath) (string, error) {
+	variant, err := s.Object(serviceName, itemPath).GetProperty(itemInterface + ".Label")
+	if err != nil {
+		return "", err
+	}
+	return variant.Value().(string), nil
 }
 
 // Delete deletes an item from the collection.
